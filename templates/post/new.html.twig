@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% set fullName   = app.user.fullName %}
+{% set picture    = app.user.picture %}
+
+{% block title %}
+   Monsieur {{fullName}}, créer un nouveau poste
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<div class="container my-3">
+   <div class="row justify-content-center">
+      <div class="col-lg-12 col-xl-8">
+         <div class="p-5 border border-light">
+            <header class="text-center mb-5">
+               <img src="/uploads/picture/{{picture}}" alt="Photo de {{fullName}}" title="{{fullName}}" class="pic-rounded mb-2">
+               <h4>{{fullName}}</h4>
+               <p>Vous êtes dans la part de créer un nouveau poste</p>
+            </header>
+            {{ form_start(form) }}
+               <!-- Le compteur -->
+               <input type="hidden" value="0" id="counter">
+               <!-- Title -->
+               <div class="form-group">
+                  {{ form_widget(form.title) }}
+                  {{ form_errors(form.title) }}
+                  {{ form_help(form.title) }}
+                  <small class="form-text text-muted text-center">Entre 3 et 20 caractères</small>
+               </div>
+               <!-- Image -->
+               <div class="form-group">
+                  {{ form_widget(form.image) }}
+                  {{ form_errors(form.image) }}
+                  {{ form_help(form.image) }}
+                  <small class="form-text text-muted text-center">JPEG - PNG / 2MB</small>
+               </div>
+               <!-- Video -->
+               <div class="form-group">
+                  {{ form_widget(form.video) }}
+                  {{ form_errors(form.video) }}
+                  {{ form_help(form.video) }}
+                  <small class="form-text text-muted text-center">MP4 - AVI / 10MB</small>
+               </div>
+               <!-- Introduction -->
+               <div class="form-group">
+                  {{ form_widget(form.introdution) }}
+                  {{ form_errors(form.introdution) }}
+                  {{ form_help(form.introdution) }}
+                  <small class="form-text text-muted text-center">Entre 30 et 255 caractères</small>
+               </div>
+               <!-- Description -->
+               <div class="form-group">
+                  {{ form_widget(form.description) }}
+                  {{ form_errors(form.description) }}
+                  {{ form_help(form.description) }}
+                  <small class="form-text text-muted text-center">1000 caractères au minimum</small>
+               </div>
+               <!-- Submit button -->
+               <div class="form-group">
+                  <button type="submit" class="btn btn-primary">
+                     <i class="fas fa-plus mr-2"></i>
+                     Créer
+                  </button>
+               </div>
+            {{ form_end(form) }}
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+
+{% block _post_images_widget %}
+   <hr class="my-3">
+   {{ form_widget(form) }}
+   <div class="add_image">
+      <p class="form-text text-muted">Il vous faut que vous ajoutiez des images pour le carousel</p>
+      <button type="button" id="add_image" class="btn btn-sm btn-primary">
+         <i class="fas fa-plus mr-2"></i>
+         Ajouter une image
+      </button>
+      <small class="form-text text-muted text-center"><strong>4</strong> images au maximum</small>
+   </div>
+{% endblock %}
+
+{% block _post_images_row %}
+   {{ form_widget(form) }}
+{% endblock %}
+
+{% block _post_images_entry_row %}
+   {{ form_widget(form) }}
+{% endblock %}
+
+{% block _post_images_entry_widget %}
+   <div class="form-group" id="block-{{id}}">
+      <div class="row">
+         <div class="col-md-5">
+            {{ form_widget(form.caption) }}
+            {{ form_errors(form.caption) }}
+            <small class="form-text text-muted text-center">Entre 8 et 20 caractères</small>
+         </div>
+         <div class="col-md-5">
+            {{ form_widget(form.img) }}
+            {{ form_errors(form.img) }}
+            <small class="form-text text-muted text-center">JPEG - PNG / 2MB</small>
+         </div>
+         <div class="col-md-2">
+            <button type="button" data-action="delete" class="btn btn-md btn-danger my-0 mx-0" data-id="#block-{{id}}">
+               <i class="fas fa-trash"></i>
+            </button>
+         </div>
+      </div>
+   </div>
+{% endblock %}
+
+{% block javascripts %}
+   <script src="/js/subForm.js"></script>
+   <script>
+      addForm('#post_images');
+   </script>
+{% endblock %}

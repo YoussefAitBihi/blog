@@ -1,0 +1,87 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+   Gestion d'utilisateurs
+{% endblock %}
+
+{% block body %}
+   {% if users is empty %}
+   <div style="height: 300px" class="d-flex align-items-center justify-content-center">
+      <div>
+         <p>Aucune recherche pour <strong>{{app.request.get('query')}}</strong></p>
+         <p>Vous pourriez retourner à la page précédente pour refaire une recherche précise en cliquant <a href="{{ path('admin_users_index') }}">ici</a>
+         </p>
+      </div>
+   </div>
+   {% else %}
+      <div class="container-fluid">
+         <h1 class="my-4"><span class="bord">Gestion</span> des utilisateurs</h1>
+         <!-- Start Form -->
+         {{ form_start(form, {'attr': {'class': 'mt-4'}}) }}
+            {{ form_widget(form.query, {'attr': {'class': 'float-left mb-4',}}) }}
+         {{ form_end(form) }}
+         <table class="table table-striped">
+            <thead class="text-center">
+               <tr>
+                  <th scope="col"><i class="fas fa-hashtag"></i></th>
+                  <th scope="col"><i class="fas fa-user"></i></th>
+                  <th scope="col"><i class="fas fa-audio-text"></i></th>
+                  <th scope="col"><i class="fas fa-clock"></i></th>
+                  <th scope="col"><i class="fas fa-video"></i></th>
+                  <th scope="col"><i class="fas fa-star"></i></th>
+                  <th scope="col"><i class="fas fa-comment"></i></th>
+                  <th scope="col"><i class="fas fa-tasks"></i></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for user in users %}
+                  <tr>
+                     <td class="align-middle text-center">{{user.id}}</td>
+                     <td class="align-middle text-center">
+                        <img class="pic-rounded mini-pic-rounded mr-2" src="/uploads/picture/{{user.picture}}" alt="Picture de {{user.fullName}}" title="{{user.fullName}}">
+                        <h6 class="mt-2">{{user.fullName}}</h6>
+                     </td>
+                     <td class="align-middle text-center">
+                        <p data-description="{{user.description}}" class="description">
+                           {{user.extractDescription}}
+                        </p>
+                        <u class="more"><small class="text-muted underlined">Voir plus</small></u>
+                     </td>
+                     <td class="align-middle text-center">{{user.createdAt | date('d/m/Y h:i')}}</td>
+                     <td class="align-middle text-center">
+                        <span class="badge badge-primary">14</span>
+                     </td>
+                     <td class="align-middle text-center">
+                        <span class="badge badge-primary">
+                           {{user.rating | number_format(1, '.')}}
+                        </span>
+                     </td>
+                     <td class="align-middle text-center">
+                        <span class="badge badge-primary">14</span>
+                     </td>
+                     <td class="align-middle text-center">
+                        <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-primary">
+                           <i class="fas fa-pen"></i>
+                        </a>
+                        <a onclick="return confirm('Souhaitez vraiment supprimer cet utilisateur')" href="{{ path('admin_user_remove', {'id': user.id}) }}" class="btn btn-sm btn-danger">
+                           <i class="fas fa-trash"></i>
+                        </a>
+                     </td>
+                  </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% set pages         = countPages %}
+         <!-- Inclusion de la pagination -->
+         {% if pages > 1 %}
+            {% set currentPage   = page %}
+            {% set route         = app.request.get('_route') %}
+            {% include 'partials/pagination.html.twig' %}
+         {% endif %}
+      </div>
+   {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+      <script src="/js/extract.js"></script>
+{% endblock %}

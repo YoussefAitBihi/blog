@@ -1,0 +1,45 @@
+{% set posts      = user.posts | length %}
+{% set rating     = user.rating %}
+{% set comments   = user.comments | length %}
+{% set likes      = user.userLikes | length %}
+<div class="user-infos py-3">
+   <a href="{{ path('user_show', {'id': user.id, 'slug': user.slug}) }}" style="color: #262626">
+      <div class="picture text-center">
+         <img src="/uploads/pictures/{{user.picture}}" alt="Picture de {{user.fullName}}" title="{{user.fullName}}" class="pic-rounded">
+         <h3 class="mt-1">
+            <i class="fas fa-user mr-2"></i>
+            {{user.fullName}}
+         </h3>
+      </div>
+   </a>
+   <div class="more-infos-user mt-4">
+      <ul class="list-group list-group-flush">
+         <li class="list-group-item">
+            <i class="fas fa-video mr-2"></i>
+            Total de postes
+            <span class="badge badge-primary badge-pill float-right">{{posts}}</span>
+         </li>
+         <li class="list-group-item">
+            <i class="fas fa-star mr-2"></i>
+            Feed-back
+            <span class="badge badge-primary badge-pill float-right">
+               {{rating | number_format(1, '.', ',')}}
+            </span>
+         </li>
+         <li class="list-group-item">
+            <i class="fas fa-comment mr-2"></i>
+            Nombre de commentaires
+            <span class="badge badge-primary badge-pill float-right">
+               {{comments}}
+            </span>
+         </li>
+         <li class="list-group-item">
+            <i class="fas fa-thumbs-up mr-2"></i>
+            Nombre de like
+            <span class="badge badge-primary badge-pill float-right">
+               {{likes}}
+            </span>
+         </li>
+      </ul>
+   </div>
+</div>

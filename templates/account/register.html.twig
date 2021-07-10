@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block title %}
+   Inscription
+{% endblock %}
+
+{% block body %}
+   <div class="container my-3">
+      <div class="row justify-content-center">
+         <div class="col-md-8 col-sm-12">
+            <!-- Default form register -->
+            {{ form_start(form, {'attr': {'class': 'text-center border border-light p-5'}}) }}
+               <i class="fas fa-lock fa-5x mb-2"></i>
+               <p class="h4 mb-4">Inscrivez-vous dès maintenant</p>
+               <div class="form-row mb-4">
+                  <!-- Premier nom -->
+                  <div class="col">
+                     {{ form_widget(form.firstName) }}
+                     {{ form_errors(form.firstName) }}
+                     {{ form_help(form.firstName) }}
+                     <small class="form-text text-muted">Entre 3 et 20 caractères</small>
+                  </div>
+                  <!-- Deuxième nom -->
+                  <div class="col">
+                     {{ form_widget(form.lastName) }}
+                     {{ form_errors(form.lastName) }}
+                     {{ form_help(form.lastName) }}
+                     <small class="form-text text-muted">Entre 3 et 20 caractères</small>
+                  </div>
+               </div>
+               <!-- Adresse email -->
+               <div class="form-group">
+                  {{ form_widget(form.email) }}
+                  {{ form_errors(form.email) }}
+                  {{ form_help(form.email) }}
+                  <small class="form-text text-muted">Email valide</small>
+               </div>
+               <!-- Mot de passe -->
+               <div class="form-group">
+                  {{ form_widget(form.hash) }}
+                  {{ form_errors(form.hash) }}
+                  {{ form_help(form.hash) }}
+                  <small class="form-text text-muted">Entre 8 et 30 caractères</small>
+               </div>
+               <!-- Confirmation du mot de passe -->
+               <div class="form-group">
+                  {{ form_widget(form.confirmPassword) }}
+                  {{ form_errors(form.confirmPassword) }}
+                  {{ form_help(form.confirmPassword) }}
+                  <small class="form-text text-muted">Confirmation correcte de mot de passe</small>
+               </div>
+               <hr class="my-5">
+               <!-- Photo de profile -->
+               <div class="form-group">
+                  {{ form_widget(form.picture) }}
+                  {{ form_errors(form.picture) }}
+                  {{ form_help(form.picture) }}
+                  <small class="form-text text-muted">2Mb et jpeg/jpg</small>
+               </div>
+               <!-- Description -->
+               <div class="form-group">
+                  {{ form_widget(form.description) }}
+                  {{ form_errors(form.description) }}
+                  {{ form_help(form.description) }}
+                  <small class="form-text text-muted">Vous expliquez précisement votre situation personnelle et professionnelle</small>
+               </div>
+               <!-- Sign up button -->
+               <div class="form-group">
+                  <button class="btn btn-info my-4 btn-block" type="submit">
+                     <i class="fas fa-user-plus mr-2"></i>
+                     Je m'inscris
+                  </button>
+               </div>
+               <!-- Social register -->
+               <p>Ou avec : </p>
+               <a href="#" class="mx-2" role="button">
+                  <i class="fab fa-facebook-f light-blue-text"></i>
+               </a>
+               <a href="#" class="mx-2" role="button">
+                  <i class="fab fa-twitter light-blue-text"></i>
+               </a>
+               <a href="#" class="mx-2" role="button">
+                  <i class="fab fa-linkedin-in light-blue-text"></i>
+               </a>
+               <a href="#" class="mx-2" role="button">
+                  <i class="fab fa-github light-blue-text"></i>
+               </a>
+            {{ form_end(form) }}
+            <!-- Default form register -->
+         </div>
+      </div>
+   </div>
+{% endblock %}

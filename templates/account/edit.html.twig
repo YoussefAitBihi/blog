@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Bonjour {{fullName}}, modifier votre compte
+{% endblock %}
+
+{% block body %}
+<div class="container my-3">
+   <div class="row">
+      <div class="offset-lg-2 offset-sm-0"></div>
+      <div class="col-lg-8 col-md-12">
+         <!-- Default form register -->
+         {{ form_start(form, {'attr': {'class': 'text-center border border-light p-5'}}) }}
+            <header>
+               <img class="pic-rounded" src="/uploads/picture/{{picture}}" alt="Photo de profile de {{fullName}}">
+               <h5 class="mb-4 mt-2">Monsieur {{fullName}}, vous êtes dans la part de modifier votre compte</h5>
+            </header>
+            <div class="form-row mb-4">
+               <!-- First name -->
+               <div class="col">
+                  <div class="form-group">
+                     {{ form_widget(form.firstName) }}
+                     {{ form_errors(form.firstName) }}
+                     {{ form_help(form.firstName) }}
+                  </div>
+               </div>
+               <!-- Last name -->
+               <div class="col">
+                  <div class="form-group">
+                     {{ form_widget(form.lastName) }}
+                     {{ form_errors(form.lastName) }}
+                     {{ form_help(form.lastName) }}
+                  </div>
+               </div>
+            </div>
+            <!-- E-mail -->
+            <div class="form-group">
+               {{ form_widget(form.email) }}
+               {{ form_errors(form.email) }}
+               {{ form_help(form.email) }}
+            </div>
+            <!-- Picture -->
+            <div class="form-group">
+               {{ form_widget(form.picture) }}
+               {{ form_errors(form.picture) }}
+               {{ form_help(form.picture) }}
+            </div>
+            <!-- Description -->
+            <div class="form-group">
+               {{ form_widget(form.description) }}
+               {{ form_errors(form.description) }}
+               {{ form_help(form.description) }}
+            </div>
+            <!-- Divider -->
+            <hr class="my-4">
+            <!-- Edit Password -->
+            <div class="text-left">
+               <p>Voulez-vous modifier votre mot de passe?</p>
+               <a href="">
+                  <i class="fas fa-pen mr-2"></i>
+                  Modifier le mot de passe
+               </a>
+            </div>
+            <hr class="my-4">
+            <!-- Sign up button -->
+            <button class="btn btn-info mt-4 btn-block" type="submit">
+               <i class="fas fa-pen mr-2"></i>
+               Modifier
+            </button>
+         {{ form_end(form) }}
+         <!-- Default form register -->
+      </div>
+   </div>
+</div>
+{% endblock %}

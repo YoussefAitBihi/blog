@@ -1,0 +1,44 @@
+<!-- Pagination -->
+{% set nextPage      = (pages == currentPage) ? 1 : currentPage + 1 %}
+{% set previousPage  = (currentPage == 1) ? pages : currentPage - 1 %}
+<nav aria-label="Page navigation example mt-5" style="display: flex;justify-content: center">
+   <ul class="pagination pagination-circle pg-blue">
+      <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
+         {% if id is defined %}
+            <a href="{{ path(route, {'page': previousPage, 'id': id, 'slug': slug}) }}" class="page-link" aria-label="Previous">
+               <span aria-hidden="true">&laquo;</span>
+            </a>
+         {% else %}
+            <a href="{{ path(route, {'page': previousPage}) }}" class="page-link" aria-label="Previous">
+               <span aria-hidden="true">&laquo;</span>
+            </a>
+         {% endif %}
+      </li>
+      {% for page in 1..pages %}
+         <!-- With Params [id, slug] -->
+         {% if id is defined %}
+            <li class="page-item {% if page == currentPage %}active{% endif %}">
+               <a href="{{ path(route, {'page': page, 'id': id, 'slug': slug}) }}" class="page-link">{{page}}</a>
+            </li>
+         <!-- Without Params -->
+         {% else %}
+            <li class="page-item {% if page == currentPage %}active{% endif %}">
+               <a href="{{ path(route, {'page': page}) }}" class="page-link">{{page}}</a>
+            </li>
+         {% endif %}
+         {% endfor %}
+      <li class="page-item {% if currentPage == pages %}disabled{% endif %}">
+         {% if id is defined %}
+            <a href="{{ path(route, {'page': nextPage, 'id': id, 'slug': slug}) }}" class="page-link" aria-label="Next">
+               <span aria-hidden="true">&raquo;</span>
+               <span class="sr-only">Next</span>
+            </a>
+            {% else %}
+               <a href="{{ path(route, {'page': nextPage}) }}" class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+               </a>         
+         {% endif %}
+      </li>
+   </ul>
+</nav>

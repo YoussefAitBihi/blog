@@ -1,0 +1,541 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+   Tableau de bord
+{% endblock %}
+
+{% block stylesheets %}
+   <style>
+      .user, .post, .comment {
+         padding: 40px 20px;
+      }
+
+      .table {
+         margin: 0;
+      }
+   </style>
+{% endblock %}
+
+{% block body %}
+<!-- Count Users & posts & comments -->
+<div class="container-fluid mt-3">
+   <div class="row">
+      <div class="col-lg-4 col-md-6 mb-md-3 mb-lg-0">
+         <div class="user success-color">
+            <div class="row align-items-center">
+               <div class="col-2">
+                  <i class="fas fa-user fa-2x"></i>
+               </div>
+               <div class="col">
+                  <h3><strong>{{counts.users}}</strong> Utilisateurs</h3>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-md-3 mb-lg-0">
+         <div class="post info-color">
+            <div class="row align-items-center">
+               <div class="col-2">
+                  <i class="fas fa-video fa-2x"></i>
+               </div>
+               <div class="col">
+                  <h3><strong>{{counts.posts}}</strong> Postes</h3>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-md-3 mb-lg-0">
+         <div class="comment warning-color">
+            <div class="row align-items-center">
+               <div class="col-2">
+                  <i class="fas fa-comment fa-2x"></i>
+               </div>
+               <div class="col">
+                  <h3><strong>{{counts.comments}}</strong> Commentaires</h3>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Divider -->
+<hr class="w-100 my-5">
+<!-- Meilleurs, mauvais utilisateurs et derniers inscrivants -->
+<div class="container-fluid">
+   <h3 class="mb-4"><span class="bord">Pour</span> les utilisateurs</h3>
+   <div class="row">
+      <!-- Top utilisateurs -->
+      <div class="col-xl-6 col-lg-12 mb-5 mb-xl-0">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-up mr-2"></i>
+                  Les meilleurs utilisateurs
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <tr>
+                        <th><i class="fas fa-hashtag"></i></th>
+                        <th><i class="fas fa-user"></i></th>
+                        <th><i class="fas fa-at"></i></th>
+                        <th><i class="fas fa-star"></i></th>
+                        <th><i class="fas fa-video"></i></th>
+                        <th><i class="fas fa-comment"></i></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in best.users %}
+                     <tr>
+                        <td class="align-middle">{{user.0.id}}</td>
+                        <td class="align-middle">
+                           <img class="pic-rounded mini-pic-rounded mb-2" src="/uploads/picture/{{user.0.picture}}" alt="Picture de {{user.0.picture}}"><br>
+                           {{user.0.fullName}}
+                        </td>
+                        <td class="align-middle">{{user.0.email}}</td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{user.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set posts = user.0.posts | length %}
+                              {{posts}} poste{% if posts > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-light">
+                              {% set comments = user.0.comments | length %}
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!-- Mauvais inscrivants -->
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les mauvais utilisateurs
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <tr>
+                        <th><i class="fas fa-hashtag"></i></th>
+                        <th><i class="fas fa-user"></i></th>
+                        <th><i class="fas fa-at"></i></th>
+                        <th><i class="fas fa-star"></i></th>
+                        <th><i class="fas fa-video"></i></th>
+                        <th><i class="fas fa-comment"></i></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in worst.users %}
+                     <tr>
+                        <td class="align-middle">{{user.0.id}}</td>
+                        <td class="align-middle">
+                           <img class="pic-rounded mini-pic-rounded mb-2" src="/uploads/picture/{{user.0.picture}}" alt="Picture de {{user.0.picture}}"><br>
+                           {{user.0.fullName}}
+                        </td>
+                        <td class="align-middle">{{user.0.email}}</td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{user.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set posts = user.0.posts | length %}
+                              {{posts}} poste{% if posts > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-light">
+                              {% set comments = user.0.comments | length %}
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Divider -->
+   <hr class="w-50 my-4">
+   <!-- Derniers inscrivants -->
+   <div class="row justify-content-center">
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les derniers inscrivants
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <tr>
+                        <th><i class="fas fa-hashtag"></i></th>
+                        <th><i class="fas fa-user"></i></th>
+                        <th><i class="fas fa-at"></i></th>
+                        <th><i class="fas fa-star"></i></th>
+                        <th><i class="fas fa-video"></i></th>
+                        <th><i class="fas fa-comment"></i></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in last.users %}
+                     <tr>
+                        <td class="align-middle">{{user.0.id}}</td>
+                        <td class="align-middle">
+                           <img class="pic-rounded mini-pic-rounded mb-2" src="/uploads/picture/{{user.0.picture}}" alt="Picture de {{user.0.picture}}"><br>
+                           {{user.0.fullName}}
+                        </td>
+                        <td class="align-middle">{{user.0.email}}</td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{user.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set posts = user.0.posts | length %}
+                              {{posts}} poste{% if posts > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-light">
+                              {% set comments = user.0.comments | length %}
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Divider -->
+<hr class="w-100 my-5">
+<div class="container-fluid">
+   <h3 class="mb-4"><span class="bord">Pour</span> les postes</h3>
+   <!-- Meilleurs, mauvais et derniers postes -->
+   <div class="row">
+      <!-- Meilleurs postes -->
+      <div class="col-xl-6 col-lg-12 mb-5 mb-lg-0">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-up mr-2"></i>
+                  Les Meilleurs postes
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-thumbs-up"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for post in best.posts %}
+                     <tr>
+                        <td class="align-middle">{{post.0.id}}</td>
+                        <td class="align-middle">{{post.0.title}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{post.0.author.picture}}" alt="Poste de {{post.0.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{post.0.author.fullName}}
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{post.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-light">
+                              {% set comments = post.0.comments | length %}
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set likes = post.0.postLikes | length %}
+                              {{likes}} like{% if likes > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!-- Mauvais postes -->
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les mauvais posts
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-thumbs-up"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for post in worst.posts %}
+                     <tr>
+                        <td class="align-middle">{{post.0.id}}</td>
+                        <td class="align-middle">{{post.0.title}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{post.0.author.picture}}" alt="Poste de {{post.0.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{post.0.author.fullName}}
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{post.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           {% set comments = post.0.comments | length %}
+                           <span class="badge badge-light">
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set likes = post.0.postLikes | length %}
+                              {{likes}} like{% if likes > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Divider -->
+   <hr class="w-50 my-4">
+   <!-- Derniers postes -->
+   <div class="row justify-content-center">
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les derniers posts
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-thumbs-up"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for post in last.posts %}
+                     <tr>
+                        <td class="align-middle">{{post.0.id}}</td>
+                        <td class="align-middle">{{post.0.title}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{post.0.author.picture}}" alt="Poste de {{post.0.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{post.0.author.fullName}}
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{post.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           {% set comments = post.0.comments | length %}
+                           <span class="badge badge-light">
+                              {{comments}} comment{% if comments > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-primary">
+                              {% set likes = post.0.postLikes | length %}
+                              {{likes}} like{% if likes > 1 %}s{% endif %}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Divider -->
+<hr class="w-100 my-5">
+<!-- Meilleurs, mauvais et derniers commentaires -->
+<div class="container-fluid">
+   <h3 class="mb-4"><span class="bord">Pour</span> les commentaires</h3>
+   <div class="row">
+      <!-- Meilleurs commentaires -->
+      <div class="col-xl-6 col-lg-12 mb-4 mb-lg-0">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-up mr-2"></i>
+                  Les Meilleurs commentaires
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for comment in best.comments %}
+                     <tr>
+                        <td class="align-middle">{{comment.id}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{comment.author.picture}}" alt="Picture de {{comment.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{comment.author.fullName}}
+                        </td>
+                        <td class="align-middle">{{comment.post.title}}</td>
+                        <td class="align-middle">
+                           <q><em>{{comment.content}}</em></q>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{comment.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!-- Mauvais commentaires -->
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les mauvais commentaires
+               </h3>
+            </div>
+            <div>
+               <table class="table table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for comment in last.comments %}
+                     <tr>
+                        <td class="align-middle">{{comment.id}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{comment.author.picture}}" alt="Picture de {{comment.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{comment.author.fullName}}
+                        </td>
+                        <td class="align-middle">{{comment.post.title}}</td>
+                        <td class="align-middle">
+                           <q><em>{{comment.content}}</em></q>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{comment.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Divider -->
+   <hr class="w-50 my-4">
+   <!-- Derniers commentaires -->
+   <div class="row justify-content-center">
+      <div class="col-xl-6 col-lg-12">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="card-title">
+                  <i class="fas fa-sort-down mr-2"></i>
+                  Les derniers commentaires
+               </h3>
+            </div>
+            <div class="">
+               <table class="table  table-striped text-center">
+                  <thead>
+                     <th><i class="fas fa-hashtag"></i></th>
+                     <th><i class="fas fa-user"></i></th>
+                     <th><i class="fas fa-heading"></i></th>
+                     <th><i class="fas fa-comment"></i></th>
+                     <th><i class="fas fa-star"></i></th>
+                  </thead>
+                  <tbody>
+                  {% for comment in last.comments %}
+                     <tr>
+                        <td class="align-middle">{{comment.id}}</td>
+                        <td class="align-middle">
+                           <img src="/uploads/picture/{{comment.author.picture}}" alt="Picture de {{comment.author.fullName}}" class="pic-rounded mini-pic-rounded mb-2"><br>
+                           {{comment.author.fullName}}
+                        </td>
+                        <td class="align-middle">{{comment.post.title}}</td>
+                        <td class="align-middle">
+                           <q><em>{{comment.content}}</em></q>
+                        </td>
+                        <td class="align-middle">
+                           <span class="badge badge-warning">
+                              {{comment.rating | number_format(1, '.', ' ')}}
+                           </span>
+                        </td>
+                     </tr>
+                  {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>  
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% set rating     = post.rating %}
+{% set comments   = post.comments | length %}
+{% set likes      = post.postLikes | length %}
+
+{% if app.user %}
+   {% if post.hasLike(app.user) == true %}
+      {% set class = 'fas' %}
+   {% else %}
+      {% set class = 'far' %}
+   {% endif %}
+{% else %}
+   {% set class = 'fas' %}
+{% endif %}
+
+<div class="card">
+   <!-- Card image -->
+   <div class="view overlay">
+      <img class="card-img-top h-100" src="/uploads/images/{{post.image}}" alt="Card image cap" title="{{post.title}}">
+      <a href="{{ path('post_show', {'id': post.id, 'slug': post.slug}) }}">
+         <div class="mask rgba-white-slight"></div>
+      </a>
+   </div>
+   <!-- Card content -->
+   <div class="card-body">
+      <div class="d-flex justify-content-between">
+         <!-- Title -->
+         <h4 class="card-title text-truncate">{{post.title}}</h4>
+         {% if app.user and app.user == post.author %}
+            <div class="d-flex">
+               <a class="text-muted" href="{{ path('post_edit', {'id': post.id, 'slug': post.slug}) }}" title="Modifier ce poste {{post.title}}">
+                  <i class="fas fa-pen mr-2"></i>
+               </a>
+               <a class="text-muted ml-2" href="{{ path('post_delete', {'id': post.id, 'slug': post.slug}) }}" title="Supprimer ce poste <em></em>{{post.title}}">
+                  <i class="fas fa-trash mr-2"></i>
+               </a>
+            </div>
+         {% endif %}
+      </div>
+      <!-- Text -->
+      <p class="card-text">{{post.extractIntroduction}}</p>
+      <!-- Creator -->
+      <a href="{{ path('user_show', {'id': post.author.id, 'slug': post.author.slug}) }}">
+         <small class="text-muted">Créé par : {{post.author.fullName}}</small>
+      </a>
+      <div class="d-flex justify-content-between mt-1">
+         <!-- Rating -->
+         <div class="rating">
+            {% if rating > 0 %}
+               {% for i in 1..rating | round %}
+                  <i class="fas fa-star"></i>
+               {% endfor %}
+            {% endif %}
+            <small class="text-muted text-small">
+               ({{rating | number_format(1, '.')}})
+            </small>
+         </div>
+         <!-- Comment and like -->
+         <div>
+            <!-- Comment -->
+            <small class="text-muted text-small">{{comments}}</small>
+            <i class="fas fa-comment ml-1 mr-2"></i>
+            <!-- Like -->
+            <a class="like" href="{{ path('post_like', {'id': post.id}) }}">
+               <small class="like-count-js text-muted text-small">{{likes}}</small>
+               <i class="{{class}} fa-thumbs-up ml-1"></i>
+            </a>
+         </div>
+      </div>
+   </div>
+   <div class="card-footer text-muted d-flex justify-content-between">
+      <div>
+         <i class="fas fa-clock mr-1"></i>
+         {{post.createdAt | date('d/m/Y')}}
+      </div>
+      <div>
+         <a class="text-muted" href="{{ path('post_show', {'id': post.id, 'slug': post.slug}) }}">Voir plus</a>
+      </div>
+   </div>
+</div>

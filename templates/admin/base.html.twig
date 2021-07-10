@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Administration | {% block title %}{% endblock %} - TubeVideo</title>
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+   <!-- Bootstrap core CSS -->
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Material Design Bootstrap -->
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/css/mdb.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="/css/style.css">
+   {% block stylesheets %}{% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+   <!-- Include NavBar -->
+   {% include 'admin/partials/navbar.html.twig' %}
+   <!-- Message Flash -->
+   {% for label, messages in app.flashes %}
+      <div class="alert alert-{{label}} alert-dismissible fade show d-flex justify-content-center mt-4" role="alert">
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+         {% for message in messages %}
+            <p>{{ message }}</p>
+         {% endfor %}
+      </div>
+   {% endfor %}
+   {% block body %}{% endblock %}
+   <!-- Include Footer -->
+   {% include 'admin/partials/footer.html.twig' %}
+   <!-- JQuery -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <!-- Bootstrap tooltips -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+   <!-- Bootstrap core JavaScript -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   <!-- MDB core JavaScript -->
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   {% block javascripts %}{% endblock %}
+</body>
+</html>

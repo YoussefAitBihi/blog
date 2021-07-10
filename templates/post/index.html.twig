@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Tous les postes
+{% endblock %}
+
+{% block body %}
+   <div class="container mt-5">
+      <h3 class="text-center">
+         <span class="bord">Voici</span> tous les postes, dès le dernier
+      </h3>
+      <!-- Start Form -->
+      {{ form_start(form, {'attr': {'class': 'mt-4'}}) }}
+         {{ form_widget(form.query, {'attr': {'class': 'float-left mb-4',}}) }}
+      {{ form_end(form) }}
+      <!-- Les postes -->
+      <div class="row mt-3">
+         <!-- S'il n'y a aucun poste -->
+         {% if posts is empty %}
+            <div class="alert alert-warning">
+               <p>Aucun poste pour le moment. Vous pouvez publier des postes en cliquant <a href="{{ path('post_new') }}">ici.</a></p>
+            </div>
+         {% endif %}
+         <!-- Tous les postes -->
+         {% for post in posts %}
+            <div class="col-xl-3 col-sm-6 mb-4">
+               {% include 'cards/card_post.html.twig' %}
+            </div>
+         {% endfor %}
+      </div>
+      <!-- La pagination -->
+      {% set pages         = countPages %}
+      {% if pages > 1 %}
+         {% set currentPage   = page %}
+         {% set route         = app.request.get('_route') %}
+         {% include 'partials/pagination.html.twig' %}
+      {% endif %}
+   </div>
+{% endblock %}
+
+{% block javascripts %}
+   <script src="/js/like.js"></script>
+{% endblock %}

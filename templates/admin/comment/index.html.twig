@@ -1,0 +1,63 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+   Gestion de commentaires
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+   <h1 class="my-4"><span class="bord">Gestion</span> des commentaires</h1>
+   <!-- Start Form -->
+   {{ form_start(form, {'attr': {'class': 'mt-4'}}) }}
+      {{ form_widget(form.query, {'attr': {'class': 'float-left mb-4',}}) }}
+   {{ form_end(form) }}
+   <table class="table table-striped text-center">
+      <thead>
+         <th><i class="fas fa-hashtag"></i></th>
+         <th><i class="fas fa-user"></i></th>
+         <th><i class="fas fa-comment"></i></th>
+         <th><i class="fas fa-star"></i></th>
+         <th><i class="fas fa-video"></i></th>
+         <th><i class="fas fa-clock"></i></th>
+         <th><i class="fas fa-tasks"></i></th>
+      </thead>
+      <tbody>
+      {% if comments %}
+         {% for comment in comments %}
+            {% set name = comment.author.fullName %}
+            <tr>
+               <td class="align-middle">{{comment.id}}</td>
+               <td class="align-middle">
+                  <img src="/uploads/picture/{{comment.author.picture}}" alt="Picture de {{name}}" class="pic-rounded mini-pic-rounded mb-2">
+                  <h6>{{name}}</h5>
+               </td>
+               <td class="align-middle">
+                  <em><q>{{comment.content}}</q></em>
+               </td>
+               <td class="align-middle">
+                  <span class="badge badge-primary">{{comment.rating | number_format(1, '.', ',')}}</span>
+               </td>
+               <td class="align-middle">{{comment.post.title}}</td>
+               <td class="align-middle">{{comment.createdAt | date('d/m/Y')}}</td>
+               <td class="align-middle">
+                  <a href="{{ path('admin_comment_edit', {'id': comment.id}) }}" class="btn btn-md btn-primary">
+                     <i class="fas fa-pen"></i>
+                  </a>
+                  <a href="{{ path('admin_comment_delete', {'id': comment.id}) }}" class="btn btn-md btn-danger">
+                     <i class="fas fa-trash"></i>
+                  </a>
+               </td>
+            </tr>
+         {% endfor %}
+      {% endif %}
+      </tbody>
+   </table>
+   <!-- Inclusion de la Pagination -->
+   {% set pages         = countPages %}
+   {% if pages > 1 %}
+      {% set currentPage   = page %}
+      {% set route         = app.request.get('_route') %}
+      {% include 'partials/pagination.html.twig' %}
+   {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Connexion
+{% endblock %}
+
+{% block body %}
+   <div class="container">
+      {% set user = lastUser ?? '' %}
+      <div class="row vh-100 align-items-center justify-content-center">
+         <div class="col-md-6 col-sm-12">
+            <!-- Default form login -->
+            <form class="text-center border border-light p-5" action="{{ path('account_login') }}" method="POST">
+               <!-- S'il y a des erreurs lors de l'authetification -->
+               {% if error is not null %}
+                  <div class="alert alert-danger">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                     <p class="mb-0">Une erreur est survenue!<br>Réessayer</p>
+                  </div>
+               {% endif %}
+               <p class="h4 mb-4">
+                  <i class="fas fa-lock mb-2"></i>
+                  Connexion
+               </p>
+               <!-- Email -->
+               <input type="email" name="_username" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Adresse e-mail" value="{{user}}">
+               <!-- Password -->
+               <input type="password" name="_password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Mot de passe">
+               <div class="d-flex justify-content-around">
+                  <div>
+                     <!-- Remember me -->
+                     <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" name="_remember_me" id="defaultLoginFormRemember">
+                        <label class="custom-control-label" for="defaultLoginFormRemember">Mémoriser le mot de passe</label>
+                     </div>
+                  </div>
+                  <div>
+                     <!-- Forgot password -->
+                     <a href="">Récupérer le mot de passe</a>
+                  </div>
+               </div>
+               <!-- Sign in button -->
+               <button class="btn btn-info btn-block my-4" type="submit">
+                  <i class="fas fa-check mr-2"></i>
+                  Se connecter
+               </button>
+               <!-- Register -->
+               <p>Vous n'êtes pas un membre?
+                  <a href="{{ path('account_register') }}">Inscrivez-vous</a>
+               </p>
+            </form>
+            <!-- Default form login -->
+         </div>
+      </div>
+   </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Voir et mettre à jour des vidéos
+{% endblock %}
+
+{% block body %}
+   <!-- Start header -->
+   <header class="jumbotron d-flex justify-content-center flex-column">
+      <h1 class="display-3 h5-sm">Bienvenue dans notre site TubeVideo</h1>
+      <h5>
+         Bienvenue dans le meilleur espace de voir des postes sympathique, et même de les partager si vous voulez!
+      </h5>
+      <hr class="w-100 my-4">
+      <p>Vous voulez passer du temps avec nous ?</p>
+      <p>
+         Veuillez rejoindre la communauté de TubeVideo en vous <a href="{{ path('account_register') }}">inscrivant</a> ou en vous <a href="{{ path('account_login') }}">connectant</a> si vous avez déja nous rejoint(e)
+      </p>
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ path('posts_index') }}" role="button">
+           <i class="fas fa-eye mr-2"></i>
+           Tous les postes
+         </a>
+      </p>
+   </header>
+   <!-- Top Utilisateurs -->
+   <section>
+      <div class="container">
+         <h3 class="mb-5"><span class="bord">Les</span> meilleurs utilisateurs</h3>
+         <div class="row">
+            {% for key, user in users %}
+               {% set user = user.users %}
+               <div class="col-md-4 col-sm-6 mb-4">
+                  {% include 'cards/card_user.html.twig' %}
+               </div>
+            {% endfor %}   
+         </div>
+         <!-- Séparateur -->
+         <hr class="my-5">
+      </div>
+   </section>
+   <!-- Top Postes -->
+   <section>
+      <div class="container">
+         <h3 class="mb-5"><span class="bord">Les</span> meilleurs postes</h3>
+         <div class="row">
+            {% for key, post in posts %}
+               <div class="col-md-3 col-sm-6 mb-4">
+                  {% set post = post.posts %}
+                  {% include 'cards/card_post.html.twig' %}
+               </div>
+            {% endfor %}
+         </div>
+         <hr class="my-5">
+      </div>
+   </section>
+   <!-- Testimonials -->
+   <section>
+      <div class="container">
+         <h3 class="mb-5 pb-5"><span class="bord">Ce</span> que nous disons nos fidèles utilisateurs</h3>
+         <div class="row mt-5">
+            {% for i in 1..4 %}
+               <div class="col-md-3 col-sm-6 mb-5">
+                  {% include 'cards/card_testimonial.html.twig' %}
+               </div>
+            {% endfor %}
+         </div>
+      </div>
+   </section>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+   $(function(){
+      const nav = $('.navbar').innerHeight();
+      $('.jumbotron').css('height', ($(window).innerHeight() - nav) + 'px');
+   });
+</script>
+<script src="/js/like.js"></script>
+{% endblock %}

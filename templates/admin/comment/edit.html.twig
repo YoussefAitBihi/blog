@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+   Modification de commentaire n°{{comment.id}}
+{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+   <div class="row justify-content-center">
+      <div class="col-lg-6 col-sm-12">
+         <div class="border border-light p-3">
+            <!-- L'image et le nom de créateur -->
+            <header class="text-center">
+               <img src="/uploads/picture/{{app.user.picture}}" alt="Picture de {{app.user.fullName}}" class="pic-rounded">
+               <h3>{{app.user.fullName}}</h3>
+               <p>Monsieur {{app.user.fullName}}, vous êtes en train le commentaire n° <i>{{comment.id}}</i></p>
+               <p>Merci de modifier l'erreur</p>
+            </header>
+            <hr class="my-4">
+            <!-- Commentaire -->
+            <div class="form-group">
+               {{form_widget(form.content)}}
+               {{form_errors(form.content)}}
+               {{form_help(form.content)}}
+            </div>
+            <!-- Feed-back -->
+            <div class="form-group">
+               {{form_widget(form.rating)}}
+               {{form_errors(form.rating)}}
+               {{form_help(form.rating)}}
+            </div>
+            <!-- Button Submit -->
+            <div class="form-group">
+               <button class="btn btn-primary">
+                  <i class="fas fa-pen mr-2"></i>
+                  Modifier
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
